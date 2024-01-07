@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <style>
+        /* Dark mode styles */
+        body.dark-mode {
+            background-color: #121212;
+            color: #ffffff;
+        }
+
+        .container.dark-mode {
+            border: 1px solid #ffffff;
+        }
+
+        .table.dark-mode {
+            background-color: #333333;
+            color: #ffffff;
+        }
+
+        .table.dark-mode th {
+            background-color: #1a1a1a;
+            color: #ffffff;
+        }
+
+        .table.dark-mode tr {
+            border-bottom: 1px solid #666666;
+        }
+
+        .form-control.dark-mode {
+            background-color: #333333;
+            color: #ffffff;
+        }
+
+        .btn-danger.dark-mode {
+            background-color: #d9534f;
+            color: #ffffff;
+        }
+
+        /* Adjustments for the Toggle Dark Mode button */
+        #dark-mode-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+        }
+    </style>
+    <title>ToDo App</title>
+</head>
+<body class="dark-mode">
+
+    <button id="dark-mode-toggle" class="btn btn-secondary dark-mode">Mode</button>
+
+    <div style="margin-top: 100px" class="container dark-mode">
+        <h3>ToDo List</h3>
+        <hr>
+
+        <form action="/add" method="post" class="dark-mode">
+            <div class="form-group">
+                <label for="formGroupExampleInput">ToDo Başlık</label>
+                <input type="text" class="form-control dark-mode" name="title" id="formGroupExampleInput" placeholder="ToDo Giriniz"><br>
+                <button type="submit" class="btn btn-danger dark-mode">Ekle</button>
+            </div>
+        </form>
+
+        {% if todos %}
+            <table class="table dark-mode">
+                <thead>
+                    <tr>
+                        <th class="bg-primary">id</th>
+                        <th class="bg-success">ToDo Başlık</th>
+                        <th class="bg-warning">ToDo Durum</th>
+                        <th class="bg-danger">Durum Güncelle</th>
+                        <th class="bg-info">ToDo Sil</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for todo in todos  %}
+                        <tr>
+                            <td class="bg-primary">{{todo.id}}</td>
+                            <td class="bg-warning">{{todo.title}}</td>
+                            
+                            {% if todo.complete == True %}
+                                <td class="bg-success">Tamamlandı</td>
+                            {% else %}
+                                <td class="bg-danger">Tamamlanmadı</td>
+                            {% endif %}
+                            
+                            <td><a href="/complete/{{todo.id}}" class ="btn btn-success">Tamamla</a></td>
+                            <td><a href="/delete/{{todo.id}}" class ="btn btn-danger">Sil</a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="alert alert-warning" role="alert">
+                ToDo listeniz boşdur...
+            </div>
+        {% endif %}
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const darkModeToggle = document.getElementById('dark-mode-toggle');
+            const body = document.body;
+
+            darkModeToggle.addEventListener('click', function () {
+                body.classList.toggle('dark-mode');
+            });
+        });
+    </script>
+
+</body>
+</html>
